@@ -1,0 +1,803 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{customer-template/fragments/fragment :: page_head}">
+</head>
+<body>
+
+<!-- Start Header/Navigation -->
+<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/beestore/trang-chu}">
+            <img th:src="@{/img/e77e3572384e5c9af495d1acfbfa6f70.jpg}"
+                 style="height: 50px; width: 50px;">
+
+            <a class="navbar-brand"
+
+               th:href="@{/beestore/trang-chu}">BeeStore<span></span></a></a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
+                aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsFurni">
+            <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+                <li class="active">
+                    <a class="nav-link" th:href="@{/beestore/trang-chu}">Trang chủ</a>
+                </li>
+                <li><a class="nav-link" th:href="@{/beestore/cua-hang}">Cửa hàng</a></li>
+                <li><a class="nav-link" th:href="@{/beestore/dichvu}">Dịch vụ</a></li>
+                <li><a class="nav-link" th:href="@{/beestore/thongtin}">Thông tin</a></li>
+                <li><a class="nav-link" th:href="@{/beestore/lienhe}">Liên hệ</a></li>
+
+
+            </ul>
+
+            <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+                <li class="nav-item position-relative">
+                    <a class="nav-link" th:href="@{/beestore/cart}" title="View Cart">
+                        <img src="/../images/cart.svg" class="cart-icon" alt="Cart Icon">
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                              th:if="${totalQuantity > 0}" th:text="${totalQuantity}">
+            0
+        </span>
+                    </a>
+                </li>
+                    <div class="dropdown show" style="padding-top: 5px">
+                        <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                           aria-expanded="false">
+                            <img src="/../images/user.svg">
+                        </a>
+                        <div >
+                            <!-- If checkSecurity is true, display the dropdown menu -->
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" th:href="'/beestore/thong-tin-cua-toi'">Tài khoản của tôi</a>
+                                <a class="dropdown-item" th:href="'/beestore/hoa-don-cua-toi'">Đơn mua</a>
+                                <a class="dropdown-item" th:href="'/logout'">Đăng xuất</a>
+                            </div>
+                        </div>
+                        <div >
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" th:href="'/beestore/login'">Đăng nhập</a>
+                            </div>
+                        </div>
+                    </div>                </li>
+
+                </li>
+                <style>
+
+                    .dropdown-menu {
+                        display: none;
+                        opacity: 0;
+                        position: absolute;
+                        top: 100%;
+                        background-color: #fff;
+                        transition: opacity 0.3s ease;
+                    }
+
+
+                    .dropdown:hover .dropdown-menu {
+                        display: block;
+                        opacity: 1;
+                    }
+
+
+                    .dropdown-menu {
+                        transform: translateY(-10px); /* Di chuyển dropdown lên trên */
+                        transition: transform 0.3s ease, opacity 0.3s ease;
+                    }
+
+                    .dropdown:hover .dropdown-menu {
+                        transform: translateY(0); /* Đặt lại vị trí ban đầu */
+                    }
+
+                    .dropdown-toggle {
+                        cursor: pointer;
+                        padding: 0;
+                        border: none;
+                        background: transparent;
+                        outline: none;
+                        height: 100%; /* Đặt chiều cao của dropdown button là 100% */
+                    }
+
+
+                    .dropdown-menu {
+                        width: auto;
+                        box-shadow: none;
+                    }
+
+                    /* Dropdown Items */
+                    .dropdown-item {
+                        display: block;
+                        width: 100%;
+                        box-sizing: border-box;
+                        text-align: left;
+                    }
+
+                    /* Cart Icon */
+                </style>
+            </ul>
+
+        </div>
+    </div>
+
+</nav>
+<!--<div class="why-choose-section">-->
+<!--    <div class="container">-->
+<!--        <div class="row justify-content-between align-items-center">-->
+<!--            <div class="col-lg-6">-->
+<!--                <h2 class="section-title"> Chào Các Bạn ! Lý do bạn nên lựa chọn BeeStore</h2>-->
+<!--                <p>Hơn 10 năm phát triển, XSHOP luôn mang đến những mẫu giày chất lượng tốt nhất với giá cả hợp lí nhất đến tay người tiêu dùng với hệ thống cửa hàng Số 1 Hà Nội và bán online khắp Việt Nam.</p>-->
+
+<!--                <div class="row my-5">-->
+<!--                    <div class="col-6 col-md-6">-->
+<!--                        <div class="feature">-->
+<!--                            <div class="icon">-->
+<!--                                <img src="../images/truck.svg" alt="Image" class="imf-fluid">-->
+<!--                            </div>-->
+<!--                            <h3>Giao hàng nhanh &amp; miễn phí</h3>-->
+<!--                            <p>Giao hàng nhanh, miễn phí toàn quốc</p>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="col-6 col-md-6">-->
+<!--                        <div class="feature">-->
+<!--                            <div class="icon">-->
+<!--                                <img src="../images/bag.svg" alt="Image" class="imf-fluid">-->
+<!--                            </div>-->
+<!--                            <h3>Dễ dàng mua sắm</h3>-->
+<!--                            <p>Thuận tiên, đảm bảo hàng chính hãng 100%</p>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="col-6 col-md-6">-->
+<!--                        <div class="feature">-->
+<!--                            <div class="icon">-->
+<!--                                <img src="../images/support.svg" alt="Image" class="imf-fluid">-->
+<!--                            </div>-->
+<!--                            <h3>Hỗ trợ 24/7</h3>-->
+<!--                            <p>Nhanh chóng, ổn định, hỗ trợ mọi nơi mọi lúc</p>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="col-6 col-md-6">-->
+<!--                        <div class="feature">-->
+<!--                            <div class="icon">-->
+<!--                                <img src="../images/return.svg" alt="Image" class="imf-fluid">-->
+<!--                            </div>-->
+<!--                            <h3>Trả hàng dễ dàng</h3>-->
+<!--                            <p>Trả hàng miễn phí hoàn toàn trong 7 ngày</p>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="col-lg-5">-->
+<!--                <div class="img-wrap">-->
+<!--                    <img src="../images/giay4.jpg" alt="Image" class="img-fluid">-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+
+<div class="untree_co-section product-section before-footer-section">
+    <h1 style="color: #0c0e12; margin-left: 750px; font-family: 'Montserrat Medium'">Sản Phẩm</h1>
+
+    <div class="container">
+        <br>
+        <div class="productfinder">
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    const productFinderDiv = document.querySelector('.scro');
+                    const errorMessage = document.querySelector('.error-message');
+                    const arr = document.querySelector('.arr');
+
+                    if (errorMessage) {
+                        arr.scrollIntoView({ behavior: 'smooth' });
+                    } else if (productFinderDiv) {
+                        productFinderDiv.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            </script>
+            <div class="pf-filter-item">
+
+                <form class="pf-controls" id="pf-Filters" >
+                    <h4>Tìm kiếm sản phẩm</h4>
+                    <fieldset class="filter-group pf-search">
+                        <input type="text" id="tenSanPham" name="tenSanPham" th:value="${tenSanPham}" class="powerText"
+                               placeholder="Tìm kiếm theo tên sản phẩm" style="width: 250px"/>
+                    </fieldset>
+                    <h4>Lọc giá</h4>
+                    <fieldset class="filter-group pf-search">
+                        <select class="form-select" aria-label="Default select example" name="sortField" id="sortField"
+                                style="font-size: medium;width: 250px">
+                            <option class="option">Chọn giá</option>
+                            <option class="option" th:value="sapXepTheoGiaBanCaoDenThap"
+                                    th:selected="${sortField == 'sapXepTheoGiaBanCaoDenThap'}">Giá cao đến thấp
+                            </option>
+                            <option class="option" th:value="sapXepTheoGiaBanThapDenCao"
+                                    th:selected="${sortField == 'sapXepTheoGiaBanThapDenCao'}">Giá thấp đến cao
+                            </option>
+                        </select></fieldset>
+                    <h4>Thương Hiệu</h4>
+                    <fieldset class="filter-group pf-checkboxes">
+                        <div class="pf-checkbox" th:each="thuongHieu : ${thuongHieus}">
+                            <input type="checkbox" th:checked="${listThuongHieu.contains(thuongHieu.ten)}"
+                                   name="tenThuongHieu" id="tenThuongHieu" th:value="${thuongHieu.ten}"
+                                   class="segment"/>
+                            <label th:text="${thuongHieu.ten}"></label>
+                        </div>
+                    </fieldset>
+                    <h4>Màu Sắc</h4>
+                    <fieldset class="filter-group pf-checkboxes">
+                        <div class="pf-checkbox" th:each="mauSac : ${mauSacs}">
+                            <input type="checkbox" th:checked="${listMauSac.contains(mauSac.ten)}" name="tenMauSac"
+                                   id="tenMauSac" th:value="${mauSac.ten}" class="segment"/>
+                            <label th:text="${mauSac.ten}"></label>
+                        </div>
+                    </fieldset>
+                    <h4>Kích Cỡ</h4>
+                    <fieldset class="filter-group pf-checkboxes">
+                        <div class="pf-checkbox" th:each="kichThuoc : ${kichThuocs}">
+                            <input type="checkbox" th:checked="${listKichThuoc.contains(kichThuoc.ten)}"
+                                   name="tenKichThuoc" id="tenKichThuoc" th:value="${kichThuoc.ten}" class="seating"/>
+                            <label th:text="${kichThuoc.ten}"></label>
+                        </div>
+                    </fieldset>
+
+
+                    <h4>Dòng Sản Phẩm</h4>
+                    <fieldset class="filter-group pf-checkboxes">
+                        <div class="pf-checkbox" th:each="dongSp : ${dongSps}">
+                            <input type="checkbox" th:checked="${listDongSanPham.contains(dongSp.ten)}"
+                                   name="tenDongSanPham" id="tenDongSanPham" th:value="${dongSp.ten}" class="power"/>
+                            <label th:text="${dongSp.ten}"></label>
+                        </div>
+                    </fieldset>
+                    <h4>Khoảng Giá</h4>
+
+                    <fieldset class="filter-group pf-checkboxes">
+                        <div class="input-container">
+                            <input type="hidden" id="minGiaValue" name="minGia" th:value="${minGia}"/>
+                            <input type="hidden" id="maxGiaValue" name="maxGia" th:value="${maxGia}"/>
+                            <input type="text" id="minGia" class="powerText" placeholder="Từ ..."
+                                   oninput="formatCurrency('minGia')" />
+                            <input type="text" id="maxGia" class="powerText" placeholder="Đến ..."
+                                   oninput="formatCurrency('maxGia')"/>
+
+                            <div th:if="${not #strings.isEmpty(err)}" class="error-message">
+                                <p style="color: red" th:text="${err}"></p>
+                            </div>
+                        </div>
+
+                    </fieldset>
+
+                    <style>
+                        h4 {
+                            margin-top: 20px;
+                        }
+
+                        .filter-group {
+                            border: 1px solid #ccc;
+                            padding: 10px;
+                            margin-bottom: 20px;
+                            max-height: 200px; /* Set the maximum height before a scrollbar appears */
+                            overflow-y: auto; /* Add vertical scrollbar if content overflows */
+                            border-bottom: 10px solid #701010; /* Thêm đường kẻ ngăn cách dưới */
+
+                        }
+
+                        .powerText {
+                            height: 40px; /* Điều chỉnh kích thước chiều rộng ở đây */
+                            margin-top: 15px;
+                            width: 200px;
+                        }
+
+                        .filter-group {
+                            border: 1px solid #ccc;
+                            padding: 10px;
+                            margin-bottom: 20px;
+                        }
+
+                        .filter-group h4 {
+                            margin-top: 0;
+                            font-size: 14px; /* Adjust the font size as needed */
+                        }
+
+                        .input-container {
+                            display: flex;
+                            flex-direction: column;
+                        }
+
+                        .input-container input[type="number"] {
+                            width: 150px; /* Adjust the width as needed */
+                            padding: 5px;
+                            margin: 5px;
+                            border: 1px solid #ddd;
+                            border-radius: 3px;
+                            font-size: 12px; /* Adjust the font size as needed */
+                        }
+
+                        /* Additional styling for the input:focus to highlight when it's active */
+                        .input-container input[type="number"]:focus {
+                            outline: none;
+                            border-color: #3498db;
+                            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+                        }
+
+                    </style>
+                    <script>
+                        var errorMessage = document.querySelector('.error-message');
+
+                        if (errorMessage) {
+                            setTimeout(function () {
+                                errorMessage.style.display = 'none';
+                            }, 10000);
+                        }
+                    </script>
+                    <div class="button-container">
+                        <a class="button-style" >
+                            <i></i> Xóa bộ lọc
+                        </a>
+                        <button class="button-style" type="submit">
+                            <i ></i> Lọc Sản Phẩm
+                        </button>
+                    </div>
+
+                    <style>
+                        .button-container {
+                            display: flex;
+                            align-items: center;
+                        }
+
+                        .button-style {
+                            font-weight: bold;
+                            height: 45px;
+                            display: flex;
+                            align-items: center;
+                            padding: 10px 20px;
+                            border: 1px solid #ccc;
+                            border-radius: 5px;
+                            text-decoration: none;
+                            color: #333;
+                            background-color: #b8afaf;
+                            font-size: 14px;
+                            margin-right: 20px;
+                        }
+
+                        .button-style:last-child {
+                            margin-right: 0;
+                        }
+                    </style>
+
+            </div>
+
+            <div class="pf-wrapper">
+                <div id="pf-Container" class="pf-container live-search-list">
+                    <div class="col-md-4" th:each="ctsp : ${listCTSP}" style="margin-right: 20px">
+                        <div class="product-item" style="margin-bottom: 50px;">
+                            <a th:href="@{'/beestore/detaisp/' + ${ctsp.idSanPham}}" style="text-decoration: none">
+                                <img th:src="@{'../images/' + ${ctsp.anhChinh}}" class="img-fluid product-thumbnail"
+                                     th:attr="width=200, height=180" alt="Product Image">
+                                <h3 class="product-title"
+                                    th:text="${ctsp.tenSanPham +' ['+ ctsp.tenDongSanPham +']'}"></h3>
+                                <div th:if="${ctsp.giaMacDinh == ctsp.giaBan}">
+                                    <strong class="product-price"
+                                            th:te xt="${#numbers.formatDecimal(ctsp.giaBan, 0, 'POINT', 0, 'COMMA') + ' VND'}"></strong>
+                                </div>
+                                <div th:if="${ctsp.giaMacDinh != ctsp.giaBan}">
+                                    <strong class="product-price">
+                                        <s style="font-size: small" th:text="${#numbers.formatDecimal(ctsp.giaMacDinh, 0, 'POINT', 0, 'COMMA') + ' VND'}"></s>
+                                    </strong>
+                                    <strong class="product-price" style="color: #bf1222;"
+                                            th:text="${#numbers.formatDecimal(ctsp.giaBan, 0, 'POINT', 0, 'COMMA') + ' VND'}"></strong>
+                                </div>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+
+
+            </div>
+
+            <div class="pagination-container">
+                <ul class="pagination">
+                    <!-- Previous Button -->
+                    <li th:if="${page > 0}">
+                        <a th:href="@{/beestore/cua-hang(page=${page-1}, pageSize=${pageSize}, sortField=${sortField})}">&laquo; Previous</a>
+                    </li>
+
+                    <!-- Page Numbers -->
+                    <li th:each="i : ${#numbers.sequence(0, totalPages-1)}"
+                        th:classappend="${page == i} ? 'active' : ''">
+                        <a th:href="@{/beestore/cua-hang(page=${i}, pageSize=${pageSize}, sortField=${sortField})}"
+                           th:text="${i + 1}">1</a>
+                    </li>
+
+                    <!-- Next Button -->
+                    <li th:if="${page < totalPages - 1}">
+                        <a th:href="@{/beestore/cua-hang(page=${page+1}, pageSize=${pageSize}, sortField=${sortField})}">Next &raquo;</a>
+                    </li>
+                </ul>
+            </div>
+
+
+
+            <!--            <div class="pagination-container">-->
+<!--                <div class="pagination">-->
+<!--                    <a class="page-item">1</a>-->
+<!--                    <a class="page-item">2</a>-->
+<!--                    <a class="page-item">3</a>-->
+<!--                </div>-->
+<!--            </div>-->
+
+            <style>
+                .pagination-container {
+        text-align: right; /* Aligns content to the right */
+        margin: 20px 0;
+    }
+
+    .pagination {
+        display: inline-block; /* Keeps the pagination centered in its container */
+    }
+
+    .pagination li {
+        display: inline;
+        margin: 0 5px; /* Spacing between page numbers */
+    }
+
+    .pagination li a {
+        color: #007bff;
+        text-decoration: none;
+        border: 1px solid #ddd;
+        padding: 8px 16px;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+    }
+
+    .pagination li a:hover {
+        background-color: #f1f1f1;
+    }
+
+    .pagination li.active a {
+        background-color: #007bff;
+        color: white;
+        border: 1px solid #007bff;
+    }
+
+    .pagination li.disabled a {
+        color: #ccc;
+        pointer-events: none;
+    }
+            </style>
+
+            </form>
+
+
+
+    </div>
+</div>
+
+
+    <footer class="footer-section">
+        <div class="container relative">
+
+
+
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="subscription-form">
+                        <h3 class="d-flex align-items-center"><span class="me-1"><img src="../images/envelope-outline.svg"
+                                                                                      alt="Image"
+                                                                                      class="img-fluid"></span><span style="color: black" >Đăng ký nhận thông tin khuyến Mại</span>
+                        </h3>
+
+                        <form action="#" class="row g-3">
+                            <div class="col-auto">
+                                <input type="text" class="form-control" placeholder="Họ và tên">
+                            </div>
+                            <div class="col-auto">
+                                <input type="email" class="form-control" placeholder="Email">
+                            </div>
+                            <div class="col-auto">
+                                <button class="btn btn">
+                                    <span class="fa fa-paper-plane"></span>
+                                </button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+                <div class="col-lg-6">
+
+
+                    <div id="map"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.8836968727605!2d105.74640787500061!3d21.03733908748429!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31345515f14a641f%3A0xe7f2a647f98416cb!2sFPT%20Polytechnic!5e0!3m2!1sen!2s!4v1696820790226!5m2!1sen!2s" width="600" height="200" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div><!-- End #map -->
+
+                </div>
+            </div>
+
+            <div class="row g-5 mb-5" style="color: black" >
+                <div class="col-lg-4">
+                    <div style="color: black"  class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo" style="color: black" >BeeStore<span></span></a></div>
+                    <p style="color: black" class="mb-4"> Hệ thống đồng hồ số 1</p>
+
+
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="row links-wrap">
+                        <div class="col-6 col-sm-6 col-md-3">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Liên hệ</a></li>
+                                <li><a href="#">Dịch vụ</a></li>
+                                <li><a href="#">Thông tin</a></li>
+                                <li><a href="#">Trung tâm trợ giúp</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="col-6 col-sm-6 col-md-3">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Vận chuyển</a></li>
+                                <li><a href="#">Khu vực</a></li>
+                                <li><a href="#">Kênh bán hàng</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="col-6 col-sm-6 col-md-3">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Hướng dẫn mua hàng</a></li>
+                                <li><a href="#">Đội ngũ</a></li>
+                                <li><a href="#">Trả hàng</a></li>
+                                <li><a href="#">Bảo mật</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="col-6 col-sm-6 col-md-3">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Chăm sóc khách hàng</a></li>
+                                <li><a href="#">Chính sách bảo hành</a></li>
+                                <li><a href="#">Hoàn tiền</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="border-top copyright">
+                <div class="row pt-4">
+                    <div class="col-lg-6">
+                        <p class="mb-2 text-center text-lg-start">Chủ sở hữu &copy;
+                            <script>document.write(new Date().getFullYear());</script> &mdash;
+                            BEESTORE_SD01_SUM24
+
+                            <!-- License information: https://untree.co/license/ -->
+                        </p>
+                    </div>
+
+
+
+                </div>
+            </div>
+
+        </div>
+    </footer>
+<style>
+    .product-title {
+        text-align: center;
+    }
+
+    .product-price {
+        text-align: right; /* Hoặc center, tùy vào thiết kế của bạn */
+    }
+    .product-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center; /* Hoặc left, tùy vào thiết kế của bạn */
+    }
+    .product-item {
+
+        padding: 20px;
+        width: 200px; /* Chiều rộng cố định */
+        height: 400px; /* Chiều cao cố định */
+        position: relative; /* Cho phép sử dụng top và left */
+
+        transition: transform 0.3s ease;
+    }
+
+    .product-thumbnail {
+        width: 200px;
+        height: 180px;
+        object-fit: cover; /* Hoặc contain, tùy vào thiết kế của bạn */
+    }
+    .product-item {
+        margin-bottom: 20px;
+    }
+
+    .product-title, .product-price {
+        margin: 10px 0;
+    }
+    .product-item:hover {
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+        transition: box-shadow 0.3s ease;
+        transform: scale(1.05);
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+
+    }
+    .pf-container {
+<!--        display: flex;-->
+<!--        flex-wrap: wrap;-->
+<!--        gap: 20px; /* Khoảng cách giữa các sản phẩm */-->
+    }
+    .productfinder {
+        width: 100%;
+        height: 100%;
+        padding: 0 30px;
+        margin-left: 3%;
+        display: table;
+    }
+
+    .productfinder > div {
+        display: table-cell;
+        float: left;
+    }
+
+    .productfinder h4 {
+        font-weight: 700;
+        margin-bottom: .5em;
+    }
+
+    .productfinder label {
+        font-weight: 300;
+    }
+
+
+    .productfinder button:focus {
+        outline: 0 none;
+    }
+
+    .productfinder .pf-controls {
+        padding: 2%;
+    }
+
+    .productfinder .filter-group {
+        display: block;
+        margin: 0 1em 0 0;
+        border: 0;
+        padding: .5em;
+    }
+
+    .productfinder .pf-checkbox {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        margin-bottom: 8px;
+    }
+
+    .productfinder .pf-checkbox input[type="checkbox"] {
+        position: absolute;
+        display: block;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        cursor: pointer;
+        margin: 0;
+        opacity: 0;
+        z-index: 1;
+    }
+
+
+
+
+    .productfinder .pf-checkbox input:checked ~ label:after {
+        opacity: 1;
+    }
+
+    .productfinder .pf-checkbox input:focus ~ label:before {
+        background: #eee;
+    }
+
+    .productfinder .pf-container .fail-message {
+        text-align: center;
+        pointer-events: none;
+        vertical-align: middle;
+        font-weight: bold;
+        font-size: large;
+        position: absolute;
+        top: 30%;
+        left: 50%;
+    }
+
+    .productfinder .pf-filter-item {
+        width: 300px;
+    }
+
+    .productfinder .pf-wrapper {
+        width: calc(100% - 300px);
+    }
+
+    .productfinder .pf-container > div:not(.fail-message) {
+        width: calc(25% - 50px);
+        float: left;
+    }
+
+    .productfinder .pf-container {
+        display: -ms-flexbox !important;
+<!--        display: flex !important;-->
+        -ms-flex-wrap: wrap !important;
+        flex-wrap: wrap !important;
+        -ms-flex-line-pack: start !important;
+        align-content: flex-start !important;
+    }
+
+    .productfinder .pf-container .pf-card {
+        text-align: center;
+        border: 1px solid transparent;
+        /*box-shadow: 0 0 15px rgba(1, 65, 137, 0.23);*/
+        padding: 10px;
+        margin: 10px;
+        position: relative;
+        padding-bottom: 35px;
+    }
+
+    .productfinder .pf-container .pf-card .pf-card-header {
+    }
+
+    .productfinder .pf-container .pf-card img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+
+    }
+
+    .pagination-container {float: right !important;
+    }
+
+
+
+</style>
+
+    <script>
+    function formatCurrency(fieldId) {
+        let inputValue = document.getElementById(fieldId).value.replace(/\D/g, '');
+        let formattedValue = formatCurrencyValue(inputValue);
+        document.getElementById(fieldId).value = formattedValue;
+        document.getElementById(fieldId + "Value").value = inputValue;
+    }
+
+    function formatCurrencyValue(value) {
+        let integerValue = Number.parseFloat(value);
+        if (isNaN(integerValue)) {
+            return "0";
+        }
+        return integerValue.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    window.onload = function () {
+        let minGiaValue = document.getElementById("minGiaValue").value;
+        let maxGiaValue = document.getElementById("maxGiaValue").value;
+
+        // Set default values to 0 if hidden inputs are empty
+        document.getElementById("minGia").value = minGiaValue !== "" ? formatCurrencyValue(minGiaValue) : "0";
+        document.getElementById("maxGia").value = maxGiaValue !== "" ? formatCurrencyValue(maxGiaValue) : "0";
+    };
+
+
+
+
+</script>
+<!-- End Footer Section -->
+</body>
+</html>
